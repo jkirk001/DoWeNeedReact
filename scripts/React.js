@@ -20,23 +20,23 @@ const React = (function () {
   function useEffect(cb, depArray) {
     const oldDeps = hooks[idx];
     let hasChanged = true;
-    // If (dep === oldDeps) - hasChanged = False // If (dep !== oldDeps) -- hasChanged = True
+    // If (depArray[i] === oldDeps) - hasChanged = False // If (depArray[i] !== oldDeps[i]) -- hasChanged = True
     if (oldDeps) {
-      hasChanged = depArray.some((dep, i) => !Object.is(dep, oldDeps));
+      hasChanged = depArray.some((dep, i) => !Object.is(dep, oldDeps[i]));
     }
     if (hasChanged === true) cb();
     hooks[idx] = depArray;
     idx++;
   }
-  return { useState, render };
+  return { useState, render, useEffect };
 })();
 
 function Component() {
   const [count, setCount] = React.useState(1);
   const [text, setText] = React.useState('apple');
   React.useEffect(() => {
-    console.log('Learning how react "worls"');
-  }, []);
+    console.log('Learning how react "works"');
+  }, [text]);
   return {
     render: () => console.log(count, text),
     click: () => setCount(count + 1),
